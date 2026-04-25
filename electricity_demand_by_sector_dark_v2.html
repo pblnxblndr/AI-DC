@@ -1,0 +1,80 @@
+
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<div style="background:#000; padding: 32px 24px 60px; border-radius:8px; font-family:'DotGothic16',monospace;">
+  <p style="color:#aaa; font-family:'DotGothic16',monospace; font-size:12px; margin:0 0 24px; text-transform:uppercase; letter-spacing:2px;">Increase in electricity demand by sector — base case 2024–2030 (TWh)</p>
+  <div style="position:relative; width:100%; height:420px;">
+    <canvas id="myChart" role="img" aria-label="Vertical bar chart showing increase in electricity demand by sector 2024-2030. Industry excluding heavy industry leads at 1540 TWh, followed by Other at 1320, Electric transport 840, Appliances 720, Space cooling 620, Data centres 530, Space and water heating 390, and Heavy industry 360.">Electricity demand increases: Industry excl. heavy industry 1540 TWh, Other 1320, Electric transport 840, Appliances 720, Space cooling 620, Data centres 530, Space and water heating 390, Heavy industry 360.</canvas>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const labels = [
+  ['Industry excl.', 'heavy industry'],
+  ['Electric', 'transport'],
+  ['Appliances'],
+  ['Space', 'cooling'],
+  ['Data', 'centres'],
+  ['Space & water', 'heating'],
+  ['Heavy', 'industry'],
+  ['Other']
+];
+const values = [1540, 840, 720, 620, 530, 390, 360, 1320];
+const colors = values.map((_, i) => i === 4 ? '#00ff41' : '#888888');
+
+new Chart(document.getElementById('myChart'), {
+  type: 'bar',
+  data: {
+    labels: labels,
+    datasets: [{
+      data: values,
+      backgroundColor: colors,
+      borderColor: colors,
+      borderWidth: 0,
+      borderRadius: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#111',
+        titleColor: '#00ff41',
+        bodyColor: '#ccc',
+        borderColor: '#333',
+        borderWidth: 1,
+        titleFont: { family: "'DotGothic16', monospace", size: 12 },
+        bodyFont: { family: "'DotGothic16', monospace", size: 12 },
+        callbacks: {
+          title: items => items[0].label.join(' '),
+          label: ctx => ' ' + ctx.parsed.y + ' TWh'
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(255,255,255,0.06)' },
+        border: { color: 'rgba(255,255,255,0.15)' },
+        ticks: {
+          color: ctx => ctx.index === 4 ? '#00ff41' : '#999',
+          font: { family: "'DotGothic16', monospace", size: 10 },
+          maxRotation: 0,
+          autoSkip: false,
+        }
+      },
+      y: {
+        grid: { color: 'rgba(255,255,255,0.06)' },
+        border: { color: 'rgba(255,255,255,0.15)', dash: [4,4] },
+        ticks: {
+          color: '#666',
+          font: { family: "'DotGothic16', monospace", size: 11 },
+          callback: v => v
+        },
+        beginAtZero: true,
+        max: 1750
+      }
+    }
+  }
+});
+</script>
