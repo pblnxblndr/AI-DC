@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sources of Global Electricity Generation for Data Centres 2020–2035</title>
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .chart-wrapper {
+      background: #000;
+      padding: 32px 28px 48px;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 820px;
+      font-family: 'DotGothic16', monospace;
+    }
+    .chart-title {
+      color: #aaa;
+      font-family: 'DotGothic16', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+    .chart-subtitle {
+      color: #555;
+      font-family: 'DotGothic16', monospace;
+      font-size: 11px;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #aaa;
+      font-family: 'DotGothic16', monospace;
+    }
+    .legend-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      display: inline-block;
+    }
+    .chart-container {
+      position: relative;
+      width: 100%;
+      height: 420px;
+    }
+    .chart-footnote {
+      color: #444;
+      font-family: 'DotGothic16', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="chart-wrapper">
+    <p class="chart-title">Sources of Global Electricity Generation for Data Centres</p>
+    <p class="chart-subtitle">Base Case 2020–2035 (TWh) — Source: IEA Energy and AI Report</p>
+
+    <div class="legend">
+      <span class="legend-item"><span class="legend-swatch" style="background:#555555;"></span>Coal</span>
+      <span class="legend-item"><span class="legend-swatch" style="background:#888888;"></span>Natural Gas</span>
+      <span class="legend-item"><span class="legend-swatch" style="background:#aaaaaa;"></span>Nuclear</span>
+      <span class="legend-item"><span class="legend-swatch" style="background:#00ff41;"></span>Renewables</span>
+    </div>
+
+    <div class="chart-container">
+      <canvas id="ieaChart"
+        role="img"
+        aria-label="Stacked area chart showing sources of global electricity generation for data centres from 2020 to 2035. Total grows from around 250 TWh in 2020 to over 1300 TWh in 2035. Renewables become the largest source by 2035, with coal and gas declining in share.">
+        IEA Base Case data centre electricity by source 2020-2035: Coal, Gas, Nuclear, and Renewables stacked, growing from ~250 TWh in 2020 to ~1300 TWh in 2035.
+      </canvas>
+    </div>
+    <p class="chart-footnote">* 2025–2035 values are IEA Base Case projections. Intermediate years interpolated from IEA reported figures.</p>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <script>
+    const years = ['2020','2021','2022','2023','2024','2025','2026','2027','2028','2029','2030','2031','2032','2033','2034','2035'];
+
+    const coal =       [75,  80,  90,  100, 120, 130, 140, 148, 152, 153, 152, 148, 143, 138, 132, 125];
+    const gas =        [65,  70,  80,  95,  120, 140, 160, 175, 188, 198, 205, 215, 225, 235, 245, 293];
+    const nuclear =    [40,  42,  45,  50,  58,  65,  72,  82,  95,  115, 135, 160, 185, 210, 230, 248];
+    const renewables = [70,  82,  98,  115, 125, 155, 192, 235, 282, 330, 380, 415, 450, 480, 508, 535];
+
+    new Chart(document.getElementById('ieaChart'), {
+      type: 'line',
+      data: {
+        labels: years,
+        datasets: [
+          {
+            label: 'Renewables',
+            data: renewables,
+            backgroundColor: 'rgba(0,255,65,0.75)',
+            borderColor: '#00ff41',
+            borderWidth: 1.5,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 0
+          },
+          {
+            label: 'Nuclear',
+            data: nuclear,
+            backgroundColor: 'rgba(170,170,170,0.85)',
+            borderColor: '#aaaaaa',
+            borderWidth: 1.5,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 0
+          },
+          {
+            label: 'Natural Gas',
+            data: gas,
+            backgroundColor: 'rgba(136,136,136,0.85)',
+            borderColor: '#888888',
+            borderWidth: 1.5,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 0
+          },
+          {
+            label: 'Coal',
+            data: coal,
+            backgroundColor: 'rgba(80,80,80,0.9)',
+            borderColor: '#555555',
+            borderWidth: 1.5,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 0
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#111',
+            titleColor: '#00ff41',
+            bodyColor: '#ccc',
+            borderColor: '#333',
+            borderWidth: 1,
+            titleFont: { family: "'DotGothic16', monospace", size: 12 },
+            bodyFont: { family: "'DotGothic16', monospace", size: 11 },
+            callbacks: {
+              label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' TWh'
+            }
+          }
+        },
+        scales: {
+          x: {
+            stacked: true,
+            grid: { color: 'rgba(255,255,255,0.06)' },
+            border: { color: 'rgba(255,255,255,0.15)' },
+            ticks: {
+              color: '#999',
+              font: { family: "'DotGothic16', monospace", size: 10 },
+              maxRotation: 0,
+              autoSkip: false
+            }
+          },
+          y: {
+            stacked: true,
+            grid: { color: 'rgba(255,255,255,0.06)' },
+            border: { color: 'rgba(255,255,255,0.15)', dash: [4, 4] },
+            ticks: {
+              color: '#666',
+              font: { family: "'DotGothic16', monospace", size: 11 },
+              callback: v => v + ' TWh'
+            },
+            beginAtZero: true,
+            max: 1400
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
